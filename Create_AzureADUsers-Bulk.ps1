@@ -1,0 +1,2 @@
+﻿Connect-MSOlService
+Import-Csv -Path "E:\Temp\ADUsers.csv" |foreach {New-MsolUser -DisplayName $_.DisplayName -FirstName $_.FirstName -LastName $_.LastName -UserPrincipalName $_.UserPrincipalName -UsageLocation $_.UsageLocation -LicenseAssignment $_.AccountSkuId} | Export-Csv -Path "C:\TempADUsersResults.csv"

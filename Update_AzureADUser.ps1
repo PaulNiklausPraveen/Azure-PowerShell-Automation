@@ -1,0 +1,1 @@
+﻿Set-AzureADUser   -Department "Physics" -ObjectId $user 
