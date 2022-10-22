@@ -1,3 +1,7 @@
+#This script will create a storage account in Azure Cloud using PowerShell AZ module
+
+Import-Module AZ -Force -Verbose
+
 #Credential Parameters
 $AdminUserName = "username@domain.com"
 $AdminPassword = "TypeThePasswordHere"
