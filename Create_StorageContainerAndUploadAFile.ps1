@@ -1,5 +1,14 @@
 <#
+This PowerShell script will create a container in the storage account and upload the file.
+prerequisites :
+1.Azure Subscription
+2.Storage Account
+
+If Azure PowerShell module is not installed,run below command
+Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
+
 Azure PowerShell cmdlets Reference
+
 1. Get-AzStorageAccount
 https://learn.microsoft.com/en-us/powershell/module/az.storage/get-azstorageaccount?view=azps-9.0.1
 
@@ -11,7 +20,7 @@ https://learn.microsoft.com/en-us/powershell/module/az.storage/set-azstorageblob
 
 #>
 
-#Import the module.Use "Install-Module AZ -Force" if module is not installed
+#Import the module
 Import-Module AZ -Force -Verbose
 
 #Credential Parameters
@@ -36,20 +45,19 @@ Else
 }
 
 
-#Create the storage container.
-#Permission of the container can be set as Blob/Container/Off.Read Microsoft docs for more details
+#Create the storage container and Permission of the container can be set as Blob/Container/Off.Read Microsoft docs for more details
 
 $StorageAccount=Get-AzStorageAccount -Name $AccountName -ResourceGroupName $ResourceGroupName
 New-AzStorageContainer -Name $ContainerName -Context $StorageAccount.Context -Permission Blob
 
-# Mention the file path and containername(objectname)
+#Mention the file path and containername(objectname)
 
 $BlobObject=@{
-    FileLocation="sample.txt"
-    ObjectName ="sample.txt"
+    FileLocation="Demofile.txt"
+    ObjectName ="FolderName"
 }
 
-#Upload the file to container
+#Upload the file to Azure storage container
 Set-AzStorageBlobContent -Context $StorageAccount.Context -Container `
 $ContainerName -File $BlobObject.FileLocation -Blob $BlobObject.ObjectName
 
