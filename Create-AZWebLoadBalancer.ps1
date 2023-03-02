@@ -95,15 +95,13 @@ New-AzNetworkSecurityGroup  -Name $NSGNAME -ResourceGroupName $ResourceGroupName
 
 #Virtual Machine Creation
 
-# Set the administrator and password for the VMs. ##
+# Set the administrator and password for the VMs.
 $Credentials = New-Object System.Management.Automation.PSCredential ($username, (ConvertTo-SecureString $PlainPassword -AsPlainText -Force))
 
-## Place the virtual network into a variable. ##
- 
+## Place the virtual network into a variable. 
 $VirtualNetwork = Get-AzVirtualNetwork -Name $($VirtualNetwork.Name) -ResourceGroupName $ResourceGroupName
 
-## Place the load balancer into a variable. ##
-
+## Place the load balancer into a variable
 $LoadBalancerpool = Get-AzLoadBalancer -Name $LoadbalancerName -ResourceGroupName $ResourceGroupName  | Get-AzLoadBalancerBackendAddressPoolConfig
 
 #Place the network security group into a variable.
@@ -132,10 +130,8 @@ for ($i=1; $i -le 2; $i++)
     }
     New-AzVM @VirtualMachine -AsJob
 }
-
 Start-Sleep 300
-
-#  For loop with variable to install custom script extension on virtual machines.  
+#For loop with variable to install custom script extension on virtual machines.  
 for ($i=1; $i -le 2; $i++)
 {
 $VirtualMachineExtension = @{
