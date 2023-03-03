@@ -3,8 +3,10 @@ Import-Module AZ -Force -Verbose
 
 Connect-AZAccount
 
+#Replace the SubscriptionID and TenantID as per the environment
 $SubscriptionID = "WWWW-XXXX-YYYY-ZZZZ-1234"
 $TenantID="WWWW-XXXX-YYYY-ZZZZ-1234"
+
 Get-AzSubscription -SubscriptionId $SubscriptionID -TenantId $TenantID | Select-AzSubscription -Force
 
 #Set variables
@@ -24,7 +26,6 @@ $BastionIPName="LBBastionIP"
 $NSGNAME="LBNSG"
 $Username = "serveradmin"
 $PlainPassword = "P@55w0rd@1357"
-
 
 #Create resource group
 New-AzResourceGroup -Name $resourceGroupName -Location $location -Verbose
@@ -66,7 +67,7 @@ $SubnetConfig = New-AzVirtualNetworkSubnetConfig -Name $BackEndSubnetName -Addre
 $BastionSubnetConfig = New-AzVirtualNetworkSubnetConfig -Name  $BastionName -AddressPrefix '10.1.1.0/24' 
 
 #Create a virtual network 
-$VirtualNetwork = New-AzVirtualNetwork -Name $VNetName -ResourceGroupName $ResourceGroupName -Location $Location `
+$VirtualNetwork = New-AzVirtualNetwork -Name $VirtualNetworkName -ResourceGroupName $ResourceGroupName -Location $Location `
      -AddressPrefix  '10.1.0.0/16' -Subnet $SubnetConfig,$BastionSubnetConfig
 
 #Create public IP address for bastion host
@@ -95,13 +96,15 @@ New-AzNetworkSecurityGroup  -Name $NSGNAME -ResourceGroupName $ResourceGroupName
 
 #Virtual Machine Creation
 
-# Set the administrator and password for the VMs.
+# Set the administrator and password for the VMs. ##
 $Credentials = New-Object System.Management.Automation.PSCredential ($username, (ConvertTo-SecureString $PlainPassword -AsPlainText -Force))
 
-## Place the virtual network into a variable. 
-$VirtualNetwork = Get-AzVirtualNetwork -Name $($VirtualNetwork.Name) -ResourceGroupName $ResourceGroupName
+## Place the virtual network into a variable. ##
+ 
+$VirtualNetworkProfile = Get-AzVirtualNetwork -Name  $VirtualNetworkName -ResourceGroupName $ResourceGroupName
 
-## Place the load balancer into a variable
+## Place the load balancer into a variable. ##
+
 $LoadBalancerpool = Get-AzLoadBalancer -Name $LoadbalancerName -ResourceGroupName $ResourceGroupName  | Get-AzLoadBalancerBackendAddressPoolConfig
 
 #Place the network security group into a variable.
@@ -112,7 +115,7 @@ for ($i=1; $i -le 2; $i++)
 {
     $VM="WEB-SERVER"
     #Create Network interface for VMs 
-    $VMNic = New-AzNetworkInterface -Name "$VM$i" -Location $Location -ResourceGroupName $ResourceGroupName -Subnet $VirtualNetwork.Subnets[0] `
+    $VMNic = New-AzNetworkInterface -Name "$VM$i" -Location $Location -ResourceGroupName $ResourceGroupName -Subnet $VirtualNetworkProfile.Subnets[0] `
      -NetworkSecurityGroup $NetworkSecurityGroup -LoadBalancerBackendAddressPool $LoadBalancerpool 
     # Create a virtual machine configuration for VMs 
  
@@ -130,8 +133,10 @@ for ($i=1; $i -le 2; $i++)
     }
     New-AzVM @VirtualMachine -AsJob
 }
+
 Start-Sleep 300
-#For loop with variable to install custom script extension on virtual machines.  
+Sleep 100
+#  For loop with variable to install custom script extension on virtual machines.  
 for ($i=1; $i -le 2; $i++)
 {
 $VirtualMachineExtension = @{
@@ -147,6 +152,9 @@ $VirtualMachineExtension = @{
 Set-AzVMExtension  @VirtualMachineExtension -AsJob
 }
 
+#Check if All jobs are got completed
+Get-Job | Receive-Job -Keep
+
 $Get_AllPublicIPs=Get-AzPublicIPAddress  -ResourceGroupName $ResourceGroupName | Select-Object Name, IpAddress , PublicIpAddressVersion, PublicIpAllocationMethod
 $LBIP= (Get-AzPublicIPAddress  -ResourceGroupName $ResourceGroupName | Where-Object {$_.Name -EQ "LoadBalancerPublicIP"}).IPAddress
 $Get_AllPublicIPs 
@@ -156,3 +164,4 @@ Write-Host "`nBrowse http://$LBIP to load the webpage`n" -ForegroundColor Green
 #Replace the browser as per your environment.
 $Browser="Chrome.exe"
 Start-Process $Browser $LBIP -WindowStyle Maximized 
+
