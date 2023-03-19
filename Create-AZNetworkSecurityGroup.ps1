@@ -1,3 +1,8 @@
+<#
+This PowerShell script will create a new network security group, with 2 security rules to allow HTTPS and RDP.
+Then Associate the NSG with existing Subnet
+#>
+
 
 $NetworkSecurityGroupName="AZ-SecurityGroup1"
 $ResourceGroupName ="ResourceGroup1"
