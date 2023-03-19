@@ -1,3 +1,5 @@
+#This PS Script will lock the Azure resources
+
 Function Lock-AZResource{
 
 param([String] $ResourceName)
