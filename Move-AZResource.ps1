@@ -3,10 +3,10 @@ This PowerShell Script will Move the Resources to another Resource Group
 Requires -Version 7.0 
 #>
 
-#Connect-AzAccount
+Connect-AzAccount
 
-$ResourceName="vm1"
-$DestinationResourceGroupName="rg2"
+$ResourceName="Type Azure Resource Name"
+$DestinationResourceGroupName="Type Destination ResourceGroup"
 
 #Define Functions
 Function Get-ResourceGroupID {
