@@ -31,10 +31,10 @@ $DestinationResourceGroupId=(Get-ResourceGroupID $DestinationResourceGroupName)
 
 Try {
 #validate if resource can move to other resourcegroup
-Invoke-AzResourceAction -Action validateMoveResources -ResourceId $SourceResourceGroupId -Parameters `
-@{resources=@($ResourceId);targetResourceGroup= $DestinationResourceGroupId} -Force -ErrorAction Stop
+Invoke-AzResourceAction -Action validateMoveResources -ResourceId $SourceResourceGroupId -Parameters @{resources=@($ResourceId);targetResourceGroup= $DestinationResourceGroupId} -Force -ErrorAction Stop
 
 Move-AzResource -DestinationResourceGroupName $DestinationResourceGroupName -ResourceId $ResourceId -Force
+
 }
 Catch {
 $_.Exception.Message
