@@ -4,7 +4,7 @@ It will create and configure Azure Traffic Manager and add those 2 VMs as -Endpo
 #>
 
 #Connect-AZAccount
-$SubscriptionID="90d89134-bb66-4a56-b22d-dd169846d147"
+$SubscriptionID="80d89134-dd1b66-4b46-b22qwer147"
 $ResourceGroupName ="TrafficManager-PS-RG"
 $Locations="North Europe","West Europe"
 $VirtualNetworkName="TF-Network1","TF-Network2"
