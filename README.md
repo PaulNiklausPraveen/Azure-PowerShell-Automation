@@ -3,7 +3,7 @@
 ![image](https://user-images.githubusercontent.com/62203157/226994135-c1516734-c2d9-4b76-9803-e857d174a662.png)
 
 
-google-site-verification: googled683ca9d98d5fe3e.html
+<meta name="google-site-verification" content="scrH_1E6obaqsqXQzq8eI4hdvCGOfuOefV9WA3y37Mg" />
 
 Azure PowerShell is a module for Microsoft PowerShell that enables management of Microsoft Azure cloud resources through PowerShell. It allows administrators and developers to automate the deployment, management, and monitoring of Azure resources using PowerShell scripts.
 
