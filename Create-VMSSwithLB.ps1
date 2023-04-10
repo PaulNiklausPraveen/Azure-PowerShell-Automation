@@ -1,7 +1,20 @@
 <#
 Provision a Azure Virtual Machine Scale Set behind the Load Balancer by Powershell
-This Azure PowerShell script will create Virtual Machine Scale set behind the Azure Load Balancer 
-#>
+
+1. Create ResourceGroup
+2. Create Virtual Network
+3. Create Subnet
+4. Create Public IP Adress
+4. Create and Configure LoadBalancer
+6. Create and Configure VMSS
+7. Create Health Probe and update LB
+8. Install IIS to VMSS through Custom Script Extention
+9. Create Network Security Group and associate to Subnet.
+10.Finally test the VMSS Connection
+
+#> 
+ 
+ 
 $ResourceGroupName ="AZ-VMSS-PowerShell-RG"
 $Location="North Europe"
 $VirtualNetworkName="VMSS-Network"
@@ -109,3 +122,7 @@ Set-AzVirtualNetworkSubnetConfig -Name $SubnetName -VirtualNetwork $VirtualNetwo
 -AddressPrefix $SubnetAddressSpace
 
 $VirtualNetwork | Set-AzVirtualNetwork
+
+
+#Test the VMSS 
+Invoke-WebRequest -Uri $((Get-AzPublicIpAddress -Name AZLB-PublicIP).IPAddress) | Select-Object -ExpandProperty Content
