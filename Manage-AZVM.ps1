@@ -29,3 +29,7 @@ $RestUri_StartVM ="//subscriptions/$Subscription/resourceGroups/$resourceGroupNa
 Invoke-AZRestMethod -Path $RestUri_StartVM -Method POST
 
 
+#Restart VM using REST API
+$RestUri_StartVM ="//subscriptions/$Subscription/resourceGroups/$resourceGroupName/providers/Microsoft.Compute/virtualMachines/$VMName/restart?api-version=2022-11-01"
+Invoke-AZRestMethod -Path $RestUri_StartVM -Method POST
+
