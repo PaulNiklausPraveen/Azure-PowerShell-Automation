@@ -1,0 +1,37 @@
+# This PowerShell script will fetch the Log analytics workspace 
+
+Set-ItemProperty -Path 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NetFramework\v4.0.30319' -Name 'SchUseStrongCrypto' -Value '1' -Type DWord
+Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\.NetFramework\v4.0.30319' -Name 'SchUseStrongCrypto' -Value '1' -Type DWord
+
+Update the Application ID detials below to connect.
+$Application_Id ="XXXXX-XXXXX-XXXXX-XXXXX"
+$Tenant_Id= "XXXXX-XXXXX-XXXXX-XXXXX"
+$Secret_Id = ConvertTo-SecureString "XXXXX-XXXXX-XXXXX-XXXXX" -AsPlainText -Force
+$Credentials = New-Object System.Management.Automation.PSCredential($Application_Id , $Secret_Id)
+Connect-AzAccount -Credential $Credentials -TenantId $Tenant_Id -ServicePrincipal 
+
+#Update the subscription id
+$SubscriptionID="XXXXX-XXXXX-XXXXX-XXXXX"
+Select-AzSubscription -SubscriptionID $SubscriptionID
+
+#Update the vm names in the text file
+$Serverlist=Get-Content 'C:\Temp\vmlist.txt'
+
+$All_workspace = Get-AzOperationalInsightsWorkspace
+Foreach($Server in $Serverlist)
+{ 
+$VM_Object=Get-AZVM -Name $Server -WarningAction SilentlyContinue
+$Extension_name = "MicrosoftMonitoringAgent"
+$VM = Get-AzVMExtension -ResourceGroupName $VM_Object.ResourceGroupName -VMName $Server -Name $extension_name -ErrorAction SilentlyContinue
+$Workspace_Id = ($vm.PublicSettings | ConvertFrom-Json).workspaceId
+Foreach($Workspace in $All_workspace)
+{
+If($Workspace.CustomerId.Guid -eq $Workspace_id)
+  { 
+  Write-Output "the vm: $($Server) writes log to Log Analytics workspace named: $($Workspace.name)"
+  "" | Select-Object @{N="Server";E={$Server}},@{N="WorkspaceName";E={($Workspace.name)}} | Export-CSV VM_WorkspaceName.csv -NoTypeInformation -Append
+  }
+}
+}
+
+
