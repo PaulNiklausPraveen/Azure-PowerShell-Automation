@@ -1,4 +1,7 @@
-#Get FTP states for multiple Azure Webapps from CSV file.CSV file consists of ResourceGroup and ResourceNames(Webappname)
+<#
+Get FTP states for multiple Azure Webapps from CSV file.CSV file consists of ResourceGroup and ResourceNames(Webappname)
+Example : Get-AzWebAppFTPState -CSVPath C:\Temp\Webapplist.csv
+#>
 Function Get-AzWebAppFTPState {
 param(
 [String]$CSVPath
