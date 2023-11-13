@@ -6,6 +6,7 @@ Function Get-AzWebAppFTPState {
 param(
 [String]$CSVPath
 )
+$AzureWebApps=Import-CSV $CSVPath
 ForEach($AzureWebApp in $AzureWebApps)
 {
 (Get-AzWebApp -ResourceGroupName $AzureWebApp.ResourceGroup -Name $AzureWebApp.ResourceName) | Select Name,Location,State,Hostnames,ResourceGroup,@{N='FTPState';E={$_.SiteConfig.FtpsState}}
