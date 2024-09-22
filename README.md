@@ -39,14 +39,61 @@ Install Azure PowerShell on Windows using an MSI- https://learn.microsoft.com/en
 Release notes - https://learn.microsoft.com/en-us/powershell/azure/release-notes-azureps?view=azps-9.5.0
 
 
-To Sign into Azure, run the following command
+Here's a template for the `README.md` that introduces your plan to write PowerShell scripts for each Azure service:
 
-> Connect-AZAccount
+---
 
-For accounts in a regional cloud, use the Environment parameter to sign in,
+# Azure PowerShell Scripts Repository
 
-> Connect-AzAccount -Environment AzureChinaCloud
+## Overview
+This repository contains a collection of PowerShell scripts designed to manage various Azure services. Each script is dedicated to automating common tasks and operations for a specific Azure service, such as Virtual Machines, Storage, Networking, and more.
 
-Find commands, Azure PowerShell cmdlets follow a standard naming convention for PowerShell, Verb-Noun. To Find all cmds in AZ.Compute,
+The goal of this repository is to provide users with ready-to-use scripts to simplify Azure management and increase efficiency in day-to-day cloud operations.
 
-> Get-Command -Verb Get -Noun AzVM* -Module Az.Compute
+## Structure
+The repository is organized by Azure services. Each folder corresponds to a specific Azure service and contains scripts that perform key operations related to that service. For example:
+- **Virtual Machines**: Scripts for creating, starting, stopping, resizing, and deleting virtual machines.
+- **Storage**: Scripts for creating, managing, and deleting storage accounts and containers.
+- **Networking**: Scripts for managing virtual networks, network security groups, and related resources.
+
+## Available Services
+- **Virtual Machine**: Scripts to automate VM creation, scaling, and management.
+- **Storage**: Manage Azure Storage Accounts, Blobs, and other related tasks.
+- **Networking**: Create and configure Virtual Networks (VNets), Network Security Groups (NSGs), and more.
+- **More Services Coming Soon**: Additional Azure services will be added, including databases, monitoring, and automation.
+
+## How to Use the Scripts
+1. **Clone the Repository**: Clone this repository to your local environment to start using the scripts.
+   ```bash
+   git clone https://github.com/PaulNiklausPraveen/AzurePowerShell.git
+   ```
+2. **Navigate to a Service Folder**: Each folder contains scripts related to a particular service.
+   ```bash
+   cd AzurePowerShell/VirtualMachine
+   ```
+
+3. **Run a Script**: Execute the PowerShell script to manage the Azure service.
+   ```powershell
+   .\Create-AzureVM.ps1
+   ```
+
+4. **Connect to Azure**: Before running any service-related script, ensure you're connected to your Azure account. Use the included `Connect-AzAccount.ps1` script to handle authentication:
+   ```powershell
+   .\Utilities\Connect-AzAccount.ps1
+   ```
+
+## Prerequisites
+- **Azure PowerShell Module**: Install the Azure PowerShell module to run the scripts.
+   ```powershell
+   Install-Module -Name Az -AllowClobber -Force
+   ```
+- **Azure Account**: Ensure you have an active Azure subscription and sufficient permissions to execute the scripts.
+
+## Contributing
+Contributions are welcome! Feel free to submit pull requests to add new features, improve existing scripts, or fix any issues. If you'd like to request a new service or feature, open an issue to discuss it.
+
+## License
+This repository is licensed under the MIT License. You are free to use, modify, and distribute the scripts as needed.
+
+---
+ 
